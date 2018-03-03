@@ -7,9 +7,20 @@ target 'twitter_alamofire_demo' do
 
   # Pods for twitter_alamofire_demo
   pod 'Alamofire'
+  pod 'AlamofireImage'
   pod 'OAuthSwift'
   pod 'OAuthSwiftAlamofire'
   pod 'KeychainAccess'
+  pod 'DateToolsSwift'
+  pod 'ActiveLabel', '~>  0.7.1'
+  #  post_install do |installer|
+  #      installer.pods_project.targets.each do |target|
+  #          target.build_configurations.each do |config|
+  #              config.build_settings['SWIFT_VERSION'] = '3.2'
+  #          end
+  #      end
+  #  end
+  
 
   target 'twitter_alamofire_demoTests' do
     inherit! :search_paths
