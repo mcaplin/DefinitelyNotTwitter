@@ -21,6 +21,7 @@ class APIManager: SessionManager {
     static var consumerKey = ""
     static var consumerSecret = ""
 
+
     static let requestTokenURL = "https://api.twitter.com/oauth/request_token"
     static let authorizeURL = "https://api.twitter.com/oauth/authorize"
     static let accessTokenURL = "https://api.twitter.com/oauth/access_token"
