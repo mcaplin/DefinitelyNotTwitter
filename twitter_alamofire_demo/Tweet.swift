@@ -43,7 +43,7 @@ class Tweet {
         text = dictionary["text"] as! String
         favoriteCount = dictionary["favorite_count"] as? Int
         if let favorite = dictionary["favorited"] as? Bool {
-            print(favorite)
+            //print(favorite)
             favorited = favorite
         }
         else {

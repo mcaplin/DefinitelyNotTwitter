@@ -8,12 +8,17 @@
 
 import UIKit
 
-class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     var tweets: [Tweet] = []
     let refreshControl = UIRefreshControl()
+    var tweetNum = 20
     
     @IBOutlet weak var tableView: UITableView!
+    
+    var isMoreDataLoading = false
+    var activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    //var loadingMoreView:InfiniteScrollActivityView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +37,15 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func getTweets() {
-        APIManager.shared.getHomeTimeLine { (tweets, error) in
+        if tweetNum > 200 {
+            tweetNum = 200
+        }
+        APIManager.shared.getHomeTimeLine(numTweets: tweetNum) { (tweets, error) in
             if let tweets = tweets {
                 self.tweets = tweets
                 self.tableView.reloadData()
+                self.isMoreDataLoading = false
+                self.activityIndicatorView.stopAnimating()
             } else if let error = error {
                 print("Error getting home timeline: " + error.localizedDescription)
             }
@@ -50,12 +60,7 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         
         cell.tweet = tweets[indexPath.row]
-        /*if cell.tweet.favorited == true {
-            print ("fav")
-            
-        }else {
-            print ("not")
-        }*/
+
         return cell
     }
     
@@ -74,10 +79,30 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
+        tweetNum = 20
         getTweets()
         refreshControl.endRefreshing()
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
+                //print ("scrolll")
+                isMoreDataLoading = true
+                
+                // ... Code to load more results ...
+                activityIndicatorView.startAnimating()
+                self.tableView.tableFooterView = activityIndicatorView
+                tweetNum += 20
+                getTweets()
+            }
+            
+        }
+    }
     
     /*
      // MARK: - Navigation

@@ -42,14 +42,7 @@ class TweetCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        /*if tweet.favorited == true {
-            print("favorited")
-        }
-        else {
-            print("not")
-        }*/
-        //print(tweet.favorited)
-        // Initialization code
+
         
     }
     
@@ -60,9 +53,7 @@ class TweetCell: UITableViewCell {
     }
     
     @IBAction func didTapFavorite(_ sender: Any) {
-        //print (tweet.favorited)
-        //self.tweet.favorited = false
-        //refreshData()
+
         if tweet.favorited == false  {
             APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
                 if let  error = error {
@@ -71,7 +62,7 @@ class TweetCell: UITableViewCell {
                     print("Successfully favorited the following Tweet: \n\(tweet.text)")
                     self.tweet.favorited = true
                     let numFavorites = self.tweet.favoriteCount ?? 0
-                    print(numFavorites)
+                    //print(numFavorites)
                     self.tweet.favoriteCount = numFavorites + 1
                     //self.favoritesLabel.text = String(self.tweet.favoriteCount)
                     //self.favoriteIcon.setImage(UIImage(named: "favor-icon-red"), for: UIControlState.normal)
@@ -99,8 +90,8 @@ class TweetCell: UITableViewCell {
         
         //refreshData()
         
-        print(tweet.favorited)
-        print("ffffffffff")
+        //print(tweet.favorited)
+        //print("ffffffffff")
  
     }
     
@@ -113,7 +104,7 @@ class TweetCell: UITableViewCell {
                     print("Successfully retweeted the following Tweet: \n\(tweet.text)")
                     self.tweet.retweeted = true
                     let numRetweets = self.tweet.retweetCount
-                    print(numRetweets)
+                    //print(numRetweets)
                     self.tweet.retweetCount = numRetweets + 1
                     //self.favoritesLabel.text = String(self.tweet.favoriteCount)
                     //self.favoriteIcon.setImage(UIImage(named: "favor-icon-red"), for: UIControlState.normal)
@@ -155,7 +146,7 @@ class TweetCell: UITableViewCell {
             
         }
         if tweet.favorited {
-            print("favorited")
+            //print("favorited")
             favoriteIcon.setImage(UIImage(named: "favor-icon-red"), for: UIControlState.normal)
             favoritesLabel.textColor = .red
         }
@@ -193,9 +184,9 @@ class TweetCell: UITableViewCell {
         let date = tweet.createdAtDate
         //let timAgo = date.
         
-        print(date)
+        //print(date)
         let timeAgo = date.shortTimeAgoSinceNow
-        print(timeAgo)
+        //print(timeAgo)
         dateLabel.text = "• " + timeAgo//tweet.createdAtString
         retweetsLabel.text = String(tweet.retweetCount)
         let numFavorites = tweet.favoriteCount ?? 0
@@ -209,15 +200,7 @@ class TweetCell: UITableViewCell {
         profileImage.af_setImage(withURL: url!)
         profileImage.layer.cornerRadius = profileImage.frame.height/2
         profileImage.clipsToBounds = true
-        /*
-        retweetsLabel.text = String(tweet.retweetCount)
-        let numFavorites = tweet.favoriteCount ?? 0
-        if numFavorites == 0 {
-            favoritesLabel.text = ""
-        }
-        else {
-            favoritesLabel.text = String(numFavorites)
-        }*/
+
     }
     /*func refreshData(tweet: Tweet) {
         Tweet.didSet {
