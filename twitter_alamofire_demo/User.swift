@@ -13,7 +13,11 @@ class User {
     var name: String
     var screenName: String
     var profileImage: String
-    //static var current: User?
+    var profileBanner: String?
+    var statusesCount: Int
+    var followersCount: Int
+    var followingCount: Int
+    var description: String?
     var dictionary: [String: Any]?
 
     
@@ -46,6 +50,11 @@ class User {
         name = dictionary["name"] as! String
         screenName = dictionary["screen_name"] as! String
         profileImage = dictionary["profile_image_url"] as! String
+        profileBanner = dictionary["profile_banner_url"] as? String
+        statusesCount = dictionary["statuses_count"] as! Int
+        followersCount = dictionary["followers_count"] as! Int
+        followingCount = dictionary["friends_count"] as! Int
+        description = dictionary["description"] as? String ?? ""
     }
 
 }

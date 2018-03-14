@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
+class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ComposeViewControllerDelegate {
     
     var tweets: [Tweet] = []
     let refreshControl = UIRefreshControl()
@@ -18,7 +18,6 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
     
     var isMoreDataLoading = false
     var activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-    //var loadingMoreView:InfiniteScrollActivityView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +33,10 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
     
     func getTweets() {
@@ -91,7 +94,6 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
             
             // When the user has scrolled past the threshold, start requesting
             if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
-                //print ("scrolll")
                 isMoreDataLoading = true
                 
                 // ... Code to load more results ...
@@ -101,6 +103,24 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
                 getTweets()
             }
             
+        }
+    }
+    func did(post: Tweet) {
+        tweets.insert(post, at: 0)
+        tableView.reloadData()
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "writeTweet" {
+            let createTweetViewController = segue.destination as! CreateTweetViewController
+            createTweetViewController.delegate = self
+        }
+        if segue.identifier == "tweetDetail" {
+            let cell = sender as! UITableViewCell
+            if let indexPath = tableView.indexPath(for: cell) {
+                let tweet = tweets[indexPath.row]
+                let detailViewController = segue.destination as! DetailViewController
+                detailViewController.tweet = tweet
+            }
         }
     }
     

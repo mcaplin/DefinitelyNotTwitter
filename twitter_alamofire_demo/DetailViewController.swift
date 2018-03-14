@@ -1,9 +1,9 @@
 //
-//  TweetCell.swift
+//  DetailViewController.swift
 //  twitter_alamofire_demo
 //
-//  Created by Charles Hieger on 6/18/17.
-//  Copyright © 2017 Charles Hieger. All rights reserved.
+//  Created by Michelle Caplin on 3/13/18.
+//  Copyright © 2018 Charles Hieger. All rights reserved.
 //
 
 import UIKit
@@ -12,9 +12,8 @@ import AlamofireImage
 import DateToolsSwift
 import ActiveLabel
 
-class TweetCell: UITableViewCell {
-
-
+class DetailViewController: UIViewController {
+    
     @IBOutlet weak var activeTweetTextLabel: ActiveLabel!
     @IBOutlet weak var tweetTextLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
@@ -30,32 +29,23 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var favoriteIcon: UIButton!
     @IBOutlet weak var retweetIcon: UIButton!
     
-    
+    var tweet: Tweet!
 
-    
-    
-    
-
-    var tweet: Tweet! {
-        didSet {
-            refreshData()
-        }
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        refreshData()
+
+        // Do any additional setup after loading the view.
     }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func didTapFavorite(_ sender: Any) {
-
+        
         if tweet.favorited == false  {
             APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
                 if let  error = error {
@@ -96,6 +86,7 @@ class TweetCell: UITableViewCell {
                     self.tweet.retweeted = true
                     let numRetweets = self.tweet.retweetCount
                     self.tweet.retweetCount = numRetweets + 1
+
                     self.refreshData()
                 }
             }
@@ -121,7 +112,7 @@ class TweetCell: UITableViewCell {
     
     
     func refreshData() {
-        usernameLabel.text = tweet.user.name
+
         if tweet.isRetweet {
             retweetedLabel.text = (tweet.retweetedByUser?.name)! + " Retweeted"
             retweetedIcon.image = UIImage(named: "retweet-icon")
@@ -149,7 +140,6 @@ class TweetCell: UITableViewCell {
             retweetIcon.setImage(UIImage(named: "retweet-icon"), for: .normal)
             retweetsLabel.textColor = .black
         }
-
         activeTweetTextLabel.enabledTypes = [.mention, .hashtag, .url]
         activeTweetTextLabel.handleHashtagTap { hashtag in
             print("Success. You just tapped the \(hashtag) hashtag")
@@ -157,16 +147,18 @@ class TweetCell: UITableViewCell {
         activeTweetTextLabel.handleURLTap { (url) in
             UIApplication.shared.open(url, options: [:])
         }
-        let col = self.tintColor
-        activeTweetTextLabel.hashtagColor = col!
-        activeTweetTextLabel.mentionColor = col!
-        activeTweetTextLabel.URLColor = col!
+        //let col = self.tintColor
+        let col = UIColor(red:0.0, green:122.0/255.0, blue:1.0, alpha:1.0)
+        activeTweetTextLabel.hashtagColor = col
+        activeTweetTextLabel.mentionColor = col
+        activeTweetTextLabel.URLColor = col
         activeTweetTextLabel.text = tweet.text
+        
         usernameLabel.text = tweet.user.name
         handleLabel.text = "@" + tweet.user.screenName
         
         let date = tweet.createdAtDate
-  
+
         let timeAgo = date.shortTimeAgoSinceNow
         dateLabel.text = "• " + timeAgo
         if tweet.retweetCount == 0 {
@@ -186,6 +178,18 @@ class TweetCell: UITableViewCell {
         profileImage.af_setImage(withURL: url!)
         profileImage.layer.cornerRadius = profileImage.frame.height/2
         profileImage.clipsToBounds = true
-
+        
     }
+    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
 }

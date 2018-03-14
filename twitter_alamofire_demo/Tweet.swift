@@ -19,9 +19,7 @@ class Tweet {
     var retweetCount: Int // Update favorite count label
     var retweeted: Bool // Configure retweet button
     var user: User // Contains name, screenname, etc. of tweet author
-    //var createdAtString: String // Display date
     var createdAtDate: Date
-    //var replyCount: Int // number of replies
     var retweetedByUser: User?
     var isRetweet: Bool
     var retweetedStatus: Tweet?
@@ -29,7 +27,6 @@ class Tweet {
     // MARK: - Create initializer with dictionary
     init(dictionary: [String: Any]) {
         var dictionary = dictionary
-        //createdAtDate = dictionary["created_at"] as! NSDate
         isRetweet = false
         if let originalTweet = dictionary["retweeted_status"] as? [String: Any] {
             let userDictionary = dictionary["user"] as! [String: Any]
@@ -43,7 +40,6 @@ class Tweet {
         text = dictionary["text"] as! String
         favoriteCount = dictionary["favorite_count"] as? Int
         if let favorite = dictionary["favorited"] as? Bool {
-            //print(favorite)
             favorited = favorite
         }
         else {
@@ -51,7 +47,6 @@ class Tweet {
         }
         retweetCount = dictionary["retweet_count"] as! Int
         retweeted = dictionary["retweeted"] as! Bool
-        //replyCount = dictionary["reply_count"] as! Int
         
         let user = dictionary["user"] as! [String: Any]
         self.user = User(dictionary: user)
@@ -67,7 +62,6 @@ class Tweet {
         formatter.timeStyle = .none
         createdAtDate = date as Date
         // Convert Date to String
-        //createdAtString = formatter.string(from: date)
         retweetedStatus = dictionary["retweeted_status"] as? Tweet
     }
 }

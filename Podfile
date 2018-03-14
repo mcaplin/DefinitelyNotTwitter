@@ -13,6 +13,7 @@ target 'twitter_alamofire_demo' do
   pod 'KeychainAccess'
   pod 'DateToolsSwift'
   pod 'ActiveLabel', '~>  0.7.1'
+  #pod 'RSKPlaceholderTextView'
   #  post_install do |installer|
   #      installer.pods_project.targets.each do |target|
   #          target.build_configurations.each do |config|
